@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM-QRP: Quantization for Reasoning Preservation in Small LLMs</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="text-center">
+            <h1 class="paper-title">Quantization for Reasoning Preservation in Small LLMs</h1>
+            <div class="authors">
+                <span class="author-block">
+                    <strong>Roshan Iruku</strong><br>
+                    Central Peel Secondary School<br>
+                    <a href="mailto:roshaniruku@gmail.com">roshaniruku@gmail.com</a>
+                </span>
+                <span class="author-block">
+                    <strong>Gurshaan Dhillon</strong><br>
+                    North Park Secondary School<br>
+                    <a href="mailto:gurshaan.dhillon10@gmail.com">gurshaan.dhillon10@gmail.com</a>
+                </span>
+            </div>
+            
+            <div class="links">
+                <a href="#" class="btn"><i class="fas fa-file-pdf"></i> Paper (PDF)</a>
+                <a href="https://github.com/CreativeLapse/LLM-QRP" class="btn"><i class="fab fa-github"></i> Code</a>
+            </div>
+        </header>
+
+        <section id="abstract">
+            <h2>Abstract</h2>
+            <p>Large Language Models (LLMs) have demonstrated exceptional capabilities in textual inference, but their deployment on edge devices is limited to high computation and memory overhead. To address this, we provide <strong>LLM-QRP</strong> (Quantization for Reasoning Preservation), a layer-aware mixed-precision quantization framework which is designed to reduce a model’s size while preserving its reasoning performance. Unlike uniform post-training quantization methods, LLM-QRP identifies and preserves critical "thinking" layers by analyzing the model’s layer-wise logit evolution and entropy dynamics across transformer blocks. These signals are combined into a unified reasoning importance score, ranking layers according to their inference contribution. We then apply an empirical mixed-precision strategy that allocates higher precision to high-scoring layers and lower precision to redundant layers, optimizing the accuracy to compression trade-off. Experiments on multiple small models were trained, and evaluation on GSM8K and TruthfulQA shows that LLM-QRP significantly reduces VRAM usage while maintaining almost near-baseline reasoning performance, outperforming standard uniform 4-bit quantization. Our results demonstrate that layer-wise quantization guided by internal reasoning signals can enable deployment of LLMs on resource-constrained hardware without significant degradation in a model’s reasoning ability.</p>
+        </section>
+
+        <section id="introduction">
+            <h2>1. Introduction</h2>
+            <p>Large Language Models (LLMs) have qualitatively transformed various domains of artificial intelligence. A core advantage of local LLMs is the benefits of on-device use. It serves as an alternative pathway for LLMs to operate effectively offline, without intermediate delays from API or cloud calls, and remains beneficial for real-time, offline applications involving autonomous vehicles, financial processing, and applications requiring a fine-tuned model. However, as a wise man once said, "With great model size comes a great compute cost." For instance, Qwen3.5, containing 0.8B parameters at FP16, has a memory footprint of 1.8 GB, which can adequately run inference on edge devices.</p>
+            <p>In post-training-quantization (PTQ), multi-step reasoning tasks are compromised first, leading to degradation in the model’s ability to reason and think. Quantization-aware training suffers from high infrastructure costs, making compute and model training quite expensive. Recent advancements in quantization provided by GPTQ and LLM-AWQ do provide mixed-precision quantization; LLM-AWQ optimizes for which weights to preserve instead of identifying layers that actually perform reasoning.</p>
+            <p>To address these challenges, we propose <strong>LLM-QRP</strong>, a layer-aware quantization framework that explicitly targets the preservation of reasoning capability in small LLMs. LLM-QRP leverages two primary metrics: <strong>Self-Logits Evolution Decoding (SLED)</strong> and <strong>Layer-wise Entropy Profiling</strong>, which are aggregated into a single-layer normalized score that ranks layers according to their reasoning contributions.</p>
+            <ul>
+                <li>We propose LLM-QRP as a layer-wise quantization method to adequately maintain a small LLM reasoning presentation while ensuring minimal loss in model performance.</li>
+                <li>Combines KL divergence and entropy into a normalized score to rank layers by reasoning importance, validated through ablation studies and chain-of-thought benchmarks (e.g., GSM8k).</li>
+            </ul>
+        </section>
+
+        <section id="methodology">
+            <h2>2. Quantization for Reasoning Preservation in Small LLMs</h2>
+            <p>We observe that not all layers contribute equally to the model’s final response, and there exists an optimal distribution of quantized layers such that the model retains most of its efficacy whilst maintaining a significantly smaller memory footprint. The intuition behind this is to find the "thinking layers."</p>
+            
+            <h3>2.1 Logits Evolution Across Transformer Layers</h3>
+            <p>Modern large language models are architecturally composed of N model layers. To measure the "thinking" occurring between adjacent layers, we calculate the KL Divergence. The core intuition is that a "Thinking Layer" is not just one that changes, but one whose change aligns semantically with the final output. The SLED score is the Cosine Similarity between the masked gradient and masked divergence, providing a score between [0, 1] with an emphasis on KL divergence.</p>
+            
+            <h3>2.2 Layer-wise Entropy Profiling</h3>
+            <p>The concept of entropy is applied to gauge an LLM’s uncertainty as it moves through the residual stream, thereby defining its probabilistic convergence. Ideally, the layers transition from high-entropy (semantic exploration) to low-entropy (probabilistic convergence) as the model converges upon a thought.</p>
+            <p>Rather than measuring raw entropy, this paper studies how sensitive a model’s final entropy is to changes in precision from each layer, or <em>Structural Entropy Sensitivity</em>. The layers with the highest quantization sensitivity are the most vital to the inference process.</p>
+            
+            <figure class="content-image">
+                <img src="assets/probabilistic_convergence.png" alt="Probabilistic Convergence">
+                <figcaption>Figure 1: Probabilistic convergence through the residual stream. High-entropy exploration in early layers transitions to low-entropy convergence in final reasoning layers.</figcaption>
+            </figure>
+
+            <h3>2.3 Mixed-Precision Quantization for Reasoning Preservation</h3>
+            <p>We employ a Mixed-Precision Quantization (MPQ) framework to convert the reasoning importance scores achieved through layer ablation and SLED/entropy analyses into a tangible structure for model deployment. After the reasoning importance scores are computed, the bottom percentile is assigned to FP4, the middle percentile to INT8, and the remainder preserved in BF16, or full precision. This algorithm runs to find a Pareto Front for quantization.</p>
+            <figure class="content-image">
+                <img src="assets/quantization_empirical_drops.png" alt="Empirical Performance Degradation">
+                <figcaption>Figure 2: Empirical performance degradation under varying quantization protocols. The QRP strategy (Mixed) significantly outperforms uniform 4-bit baselines by selectively preserving high-sensitivity thinking layers.</figcaption>
+            </figure>
+        </section>
+
+        <section id="experiments">
+            <h2>3. Experiments and Benchmark</h2>
+            
+            <h3>3.1 Verification of "Thinking" Layers</h3>
+            <p>To verify whether layers assigned higher "thinking scores" are truly more important for reasoning, we utilized a layer ablation-based approach. We found that removing 20% of the top layers resulted in a significantly greater performance decline than removing the bottom 20%, validating our reasoning scores.</p>
+
+            <figure class="content-image">
+                <img src="assets/ablation_performance.png" alt="Layer Ablation Performance">
+                <figcaption>Figure 3: Performance drop measured after top and bottom 20% layers are sorted by thinking scores and ablation tested on Qwen2.5-0.5B.</figcaption>
+            </figure>
+
+            <h3>3.2 Experimental Setup & Results</h3>
+            <p>LLM-QRP yields a mean efficiency gain of over 67%, reinforcing how retaining precision on reasoning-dense layers can achieve a more optimal utility-to-size density.</p>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>VRAM Reduction (%)</th>
+                            <th>Reasoning Retention (%)</th>
+                            <th>Efficiency Gain (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SmolLM2-135M</td>
+                            <td>50.0</td>
+                            <td>92.1</td>
+                            <td>+91.3</td>
+                        </tr>
+                        <tr>
+                            <td>Qwen2.5-0.5B</td>
+                            <td>53.1</td>
+                            <td>113.9</td>
+                            <td>+68.2</td>
+                        </tr>
+                        <tr>
+                            <td>LFM2.5-350M</td>
+                            <td>56.3</td>
+                            <td>85.2</td>
+                            <td>+42.5</td>
+                        </tr>
+                        <tr class="font-weight-bold" style="font-weight: 700; background-color: #f9f9f9;">
+                            <td>Average</td>
+                            <td>53.1</td>
+                            <td>97.1</td>
+                            <td>+67.3</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="caption">Table 1: Mixed-precision quantization performance across model families. VRAM Reduction denotes memory savings relative to BF16.</p>
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2>4. Conclusion</h2>
+            <p>In this paper, we propose LLM-QRP, a layer-based quantization framework for the preservation of reasoning in small models for use on edge computing. Through the compilation of SLED and structural entropy sensitivity, we discovered the layer subsets most vital to reasoning in low-parameter LLMs, verifying this with an ablation study and benchmarking. LLM-QRP provides the blueprint for a strategy to improve the deployment of reasoning-capable models on edge hardware and limited-resource environments, creating a buffer between strong model intelligence and hardware requirements.</p>
+        </section>
+        
+        <section id="bibtex">
+            <h2>BibTeX</h2>
+            <pre><code>@inproceedings{iruku2024llmqrp,
+  title={Quantization for Reasoning Preservation in Small LLMs},
+  author={Iruku, Roshan and Dhillon, Gurshaan},
+  year={2024}
+}</code></pre>
+        </section>
+        
+        <footer>
+            <p>This website is inspired by academic project pages. View the <a href="https://github.com/CreativeLapse/LLM-QRP">LLM-QRP GitHub Repository</a>.</p>
+        </footer>
+    </div>
+</body>
+</html>
