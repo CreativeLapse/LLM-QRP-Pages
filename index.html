@@ -66,12 +66,16 @@
 
     <section class="section">
         <div class="container is-max-desktop">
-            <div class="columns is-centered has-text-centered">
-                <div class="column is-four-fifths">
-                    <h2 class="title is-3">Thinking Collapse & Evolution</h2>
-                    <div class="content has-text-centered">
-                        <img src="assets/thinking_collapse.png" alt="Thinking Collapse Analysis" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
-                        <p class="is-italic">Figure 1: Internal diagnostic showing the collapse of reasoning signals under uniform quantization compared to our preservation strategy.</p>
+            <div class="columns is-centered">
+                <div class="column is-full-width">
+                    <h2 class="title is-3 has-text-centered">Methodology</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            LLM-QRP leverages <strong>Self-Logits Evolution Decoding (SLED)</strong> and <strong>Layer-wise Entropy Profiling</strong> to identify critical reasoning bottlenecks. By analyzing how tokens mature through the residual stream, we can distinguish between layers that perform core logical transformations and those that merely relay information.
+                        </p>
+                        <p>
+                            Our mixed-precision strategy allocates higher precision to these "thinking layers" while applying aggressive quantization to redundant blocks, optimizing the accuracy-to-compression frontier for sub-500M parameter models.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -82,31 +86,11 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered">
                 <div class="column is-full-width">
-                    <h2 class="title is-3 has-text-centered">Experiments & Results</h2>
+                    <h2 class="title is-3 has-text-centered">Results</h2>
                     <div class="content has-text-justified">
                         <p>
-                            Our method consistently outperforms standard quantization across various model families. By selectively preserving the top-ranked "thinking" layers, we achieve a superior accuracy-to-compression ratio.
+                            Evaluation on GSM8K and TruthfulQA demonstrates that LLM-QRP consistently outperforms standard quantization baselines. We achieve an average efficiency gain of over 67%, preserving model intelligence even under extreme weight compression.
                         </p>
-                        <div class="columns is-centered">
-                            <div class="column">
-                                <h4 class="title is-5 has-text-centered">Quantization Sweep (GSM8K)</h4>
-                                <img src="assets/gsm8k_quantization_sweep.png" alt="GSM8K Quantization Sweep">
-                            </div>
-                            <div class="column">
-                                <h4 class="title is-5 has-text-centered">Layer Ablation Study</h4>
-                                <img src="assets/ablation_performance.png" alt="Layer Ablation">
-                            </div>
-                        </div>
-                        <div class="columns is-centered">
-                            <div class="column">
-                                <h4 class="title is-5 has-text-centered">Quantization Sweep (TruthfulQA)</h4>
-                                <img src="assets/tfqa_quantization_sweep.png" alt="TruthfulQA Quantization Sweep">
-                            </div>
-                            <div class="column">
-                                <h4 class="title is-5 has-text-centered">Empirical Performance Drop</h4>
-                                <img src="assets/quantization_empirical_drops.png" alt="Empirical Drops">
-                            </div>
-                        </div>
                     </div>
                     
                     <div class="table-container">
