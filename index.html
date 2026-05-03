@@ -66,16 +66,12 @@
 
     <section class="section">
         <div class="container is-max-desktop">
-            <div class="columns is-centered">
+            <div class="columns is-centered has-text-centered">
                 <div class="column is-full-width">
-                    <h2 class="title is-3 has-text-centered">Methodology</h2>
-                    <div class="content has-text-justified">
-                        <p>
-                            LLM-QRP leverages <strong>Self-Logits Evolution Decoding (SLED)</strong> and <strong>Layer-wise Entropy Profiling</strong> to identify critical reasoning bottlenecks. By analyzing how tokens mature through the residual stream, we can distinguish between layers that perform core logical transformations and those that merely relay information.
-                        </p>
-                        <p>
-                            Our mixed-precision strategy allocates higher precision to these "thinking layers" while applying aggressive quantization to redundant blocks, optimizing the accuracy-to-compression frontier for sub-500M parameter models.
-                        </p>
+                    <h2 class="title is-3">Framework Overview</h2>
+                    <div class="content has-text-centered">
+                        <img src="assets/workflow_diagram.png" alt="LLM-QRP Workflow Diagram" style="max-width: 90%; border-radius: 8px;">
+                        <p class="is-italic mt-3">Figure 1: The LLM-QRP end-to-end framework: From GSM8K input to layer-wise entropy analysis and mixed-precision quantization logic.</p>
                     </div>
                 </div>
             </div>
@@ -86,10 +82,41 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered">
                 <div class="column is-full-width">
-                    <h2 class="title is-3 has-text-centered">Results</h2>
+                    <h2 class="title is-3 has-text-centered">Methodology: Entropy & Thinking Layers</h2>
                     <div class="content has-text-justified">
                         <p>
-                            Evaluation on GSM8K and TruthfulQA demonstrates that LLM-QRP consistently outperforms standard quantization baselines. We achieve an average efficiency gain of over 67%, preserving model intelligence even under extreme weight compression.
+                            LLM-QRP leverages <strong>Layer-wise Entropy Profiling</strong> to identify critical reasoning bottlenecks. As illustrated below, layers transition from high-entropy uncertainty (semantic exploration) to low-entropy commitment (reasoning convergence). Our "Refinement Filter" concept identifies these convergence points as the most vital layers to preserve in full precision.
+                        </p>
+                        <div class="has-text-centered">
+                            <img src="assets/entropy_concept.png" alt="Entropy and Thinking Layers" style="max-width: 85%; margin: 20px 0; border-radius: 8px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="column is-full-width">
+                    <h2 class="title is-3 has-text-centered">Experimental Results</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            We validate our "thinking score" using extensive ablation studies. As shown in Figure 3, removing layers with high reasoning scores leads to a much faster performance collapse compared to redundant layers.
+                        </p>
+                        <div class="columns is-centered mt-5">
+                            <div class="column is-6">
+                                <h4 class="title is-5 has-text-centered">Ablation Sensitivity</h4>
+                                <img src="assets/ablation_gsm8k.png" alt="GSM8K Ablation Study">
+                            </div>
+                            <div class="column is-6">
+                                <h4 class="title is-5 has-text-centered">Mixed-Precision Pareto</h4>
+                                <img src="assets/quantization_sweep.png" alt="Quantization Performance Sweep">
+                            </div>
+                        </div>
+                        <p class="mt-4">
+                            By selectively preserving just 20-30% of the most sensitive layers, we maintain near-BF16 performance while achieving massive VRAM savings.
                         </p>
                     </div>
                     
@@ -124,6 +151,20 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full-width">
+                    <h2 class="title is-3">Edge Deployment Potential</h2>
+                    <div class="content has-text-centered">
+                        <img src="assets/deployment_concept.png" alt="Edge Deployment" style="max-width: 70%; border-radius: 8px;">
+                        <p class="is-italic mt-3">LLM-QRP acts as the bridge between compute-heavy server infrastructure and low-resource edge devices (Raspberry Pi, Jetson Nano).</p>
                     </div>
                 </div>
             </div>
