@@ -74,28 +74,10 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-four-fifths">
-                    <h2 class="title is-3">Overview of LLM-QRP</h2>
+                    <h2 class="title is-3">Thinking Collapse & Evolution</h2>
                     <div class="content has-text-centered">
-                        <img src="assets/quantization_overview.png" alt="LLM-QRP Workflow" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
-                        <p class="is-italic">Figure 1: Illustration of the LLM-QRP workflow, identifying critical reasoning layers for precision preservation.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container is-max-desktop">
-            <div class="columns is-centered">
-                <div class="column is-full-width">
-                    <h2 class="title is-3 has-text-centered">Thinking Evolution & Entropy</h2>
-                    <div class="content has-text-justified">
-                        <p>
-                            We analyze <strong>Self-Logits Evolution Decoding (SLED)</strong> signals to track how tokens mature across layers. We observe a distinct "probabilistic convergence" where high-entropy semantic exploration in early layers transitions into low-entropy reasoning in deeper transformer blocks.
-                        </p>
-                        <div class="has-text-centered">
-                            <img src="assets/probabilistic_convergence.png" alt="Probabilistic Convergence" style="max-width: 80%; margin: 20px 0;">
-                        </div>
+                        <img src="assets/thinking_collapse.png" alt="Thinking Collapse Analysis" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                        <p class="is-italic">Figure 1: Internal diagnostic showing the collapse of reasoning signals under uniform quantization compared to our preservation strategy.</p>
                     </div>
                 </div>
             </div>
@@ -109,14 +91,26 @@
                     <h2 class="title is-3 has-text-centered">Experiments & Results</h2>
                     <div class="content has-text-justified">
                         <p>
-                            Our method consistently outperforms standard quantization across various model families (Qwen, SmolLM, LFM). By selectively preserving the top-ranked "thinking" layers, we achieve a superior accuracy-to-compression ratio.
+                            Our method consistently outperforms standard quantization across various model families. By selectively preserving the top-ranked "thinking" layers, we achieve a superior accuracy-to-compression ratio.
                         </p>
                         <div class="columns is-centered">
                             <div class="column">
-                                <img src="assets/quantization_empirical_drops.png" alt="Quantization Sweep">
+                                <h4 class="title is-5 has-text-centered">Quantization Sweep (GSM8K)</h4>
+                                <img src="assets/gsm8k_quantization_sweep.png" alt="GSM8K Quantization Sweep">
                             </div>
                             <div class="column">
+                                <h4 class="title is-5 has-text-centered">Layer Ablation Study</h4>
                                 <img src="assets/ablation_performance.png" alt="Layer Ablation">
+                            </div>
+                        </div>
+                        <div class="columns is-centered">
+                            <div class="column">
+                                <h4 class="title is-5 has-text-centered">Quantization Sweep (TruthfulQA)</h4>
+                                <img src="assets/tfqa_quantization_sweep.png" alt="TruthfulQA Quantization Sweep">
+                            </div>
+                            <div class="column">
+                                <h4 class="title is-5 has-text-centered">Empirical Performance Drop</h4>
+                                <img src="assets/quantization_empirical_drops.png" alt="Empirical Drops">
                             </div>
                         </div>
                     </div>
