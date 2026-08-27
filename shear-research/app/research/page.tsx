@@ -4,33 +4,30 @@ import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import ResearchCard from "../components/ResearchCard"
+import papers from "../../data/papers.json"
 
 const filters = {
-  Topics: ["Perception", "Simulation", "SensorSim", "End-to-End Driving", "Retrospective Safety Impact"],
-  Venues: ["CVPR", "IROS"],
-  "Year Published": ["2025", "2026"],
+  Topics: ["Quantization", "LLMs", "Reasoning"],
+  Venues: ["ICLR"],
+  "Year Published": ["2027"],
 }
-
-const papers = [
-  {
-    title: "Sensor2Sensor: Cross-Embodiment Sensor Conversion for Autonomous Driving",
-    authors: "Jiahao Wang, Bo Sun, Yijing Bai, Vincent Casser, Songyou Peng, Zehao Zhu, Meng-Li Shih, Xander Masotto, Shih-Yang Su, Kanaad V Parvate, Tiancheng Ge, Linn Bieske, Dragomir Anguelov, Mingxing Tan, Chiyu Max Jiang",
-    tags: ["SensorSim", "Perception", "CVPR", "2026", "Peer-reviewed Research", "Retrospective Safety Impact"],
-  },
-  {
-    title: "Drive&Gen: Co-Evaluating End-to-End Driving and Video Generation Models",
-    authors: "Jiahao Wang, Zhenpei Yang, Yijing Bai, Yingwei Li, Yuliang Zou, Bo Sun, Abhijit Kundu, Jose Lezama, Luna Yue Huang, Zehao Zhu, Jyh-Jing Hwang, Dragomir Anguelov, Mingxing Tan, Chiyu Max Jiang",
-    tags: ["End-to-End Driving", "Simulation", "IROS", "2025"],
-  },
-  {
-    title: "SceneDiffuser++: City-Scale Traffic Simulation via a Generative World Model",
-    authors: "Shuhan Tan, John Lambert, Hong Jeon, Sakshum Kulshrestha, Yijing Bai, Jing Luo, Dragomir Anguelov, Mingxing Tan, Chiyu Max Jiang",
-    tags: ["2025", "CVPR", "Simulation"],
-  },
-]
 
 export default function ResearchPage() {
   const [openFilter, setOpenFilter] = useState<string | null>(null)
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+
+  const toggleFilter = (option: string) => {
+    setSelectedFilters((prev) =>
+      prev.includes(option)
+        ? prev.filter((f) => f !== option)
+        : [...prev, option]
+    )
+  }
+
+  const filteredPapers = papers.filter((paper) => {
+    if (selectedFilters.length === 0) return true
+    return selectedFilters.some((filter) => paper.tags.includes(filter))
+  })
 
   return (
     <>
@@ -68,7 +65,12 @@ export default function ResearchPage() {
                     <div className="mt-2 ml-2 flex flex-col gap-2">
                       {options.map((option) => (
                         <label key={option} className="flex items-center gap-2 text-sm text-zinc-500 cursor-pointer hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
-                          <input type="checkbox" className="w-3 h-3 accent-zinc-500" />
+                          <input
+                            type="checkbox"
+                            className="w-3 h-3 accent-zinc-500"
+                            checked={selectedFilters.includes(option)}
+                            onChange={() => toggleFilter(option)}
+                          />
                           {option}
                         </label>
                       ))}
@@ -80,7 +82,7 @@ export default function ResearchPage() {
           </div>
 
           <div className="flex flex-col gap-6 flex-1">
-            {papers.map((paper) => (
+            {filteredPapers.map((paper) => (
               <ResearchCard key={paper.title} {...paper} />
             ))}
           </div>
