@@ -4,7 +4,7 @@ import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import ResearchCard from "../components/ResearchCard"
-import papers from "../../data/papers.json"
+import publications from "../../data/publications"
 
 const filters = {
   Topics: ["Quantization", "LLMs", "Reasoning"],
@@ -24,7 +24,7 @@ export default function ResearchPage() {
     )
   }
 
-  const filteredPapers = papers.filter((paper) => {
+  const filteredPapers = publications.filter((paper) => {
     if (selectedFilters.length === 0) return true
     return selectedFilters.some((filter) => paper.tags.includes(filter))
   })
@@ -38,11 +38,11 @@ export default function ResearchPage() {
             <h1 className="text-5xl font-bold tracking-tight" style={{ fontFamily: "var(--font-space-mono), monospace" }}>Research</h1>
             <div className="max-w-lg text-right">
               <p className="text-base text-zinc-600 dark:text-zinc-400 mb-4">
-                Advancing the state of the art LLMs
+                Advancing machine learning research
               </p>
               <p className="text-sm text-zinc-500 dark:text-zinc-500 leading-relaxed">
-                Our research pushes the boundaries of what language models can achieve.
-                Check out our latest work below to see how we are advancing the field.
+                Our research pushes the boundaries of machine learning and artificial intelligence.
+                Explore our latest work across deep learning, optimization, and computational intelligence.
               </p>
             </div>
           </div>

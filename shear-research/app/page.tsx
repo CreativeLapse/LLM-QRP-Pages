@@ -24,9 +24,9 @@ export default function Home() {
         </section>
         <div className="relative w-full h-[600px] overflow-hidden">
           <ShaderBackground className="absolute inset-0" />
-          <div className="absolute bottom-8 right-8 w-[400px] h-[100px]">
+          <Link href="/research" className="absolute bottom-8 right-8 w-[400px] h-[100px]">
             <ResearchText />
-          </div>
+          </Link>
         </div>
         <div className="flex justify-end mt-6">
           <a

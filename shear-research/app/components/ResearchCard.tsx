@@ -1,15 +1,28 @@
+import Link from "next/link"
+
+interface Author {
+  name: string
+  affiliation?: string
+}
+
 interface ResearchCardProps {
   title: string
-  authors: string
+  slug?: string
+  authors: string | Author[]
   tags: string[]
   pdfUrl?: string
 }
 
-export default function ResearchCard({ title, authors, tags, pdfUrl = "#" }: ResearchCardProps) {
-  return (
+function formatAuthors(authors: string | Author[]): string {
+  if (typeof authors === "string") return authors
+  return authors.map((a) => a.name).join(", ")
+}
+
+export default function ResearchCard({ title, slug, authors, tags, pdfUrl = "#" }: ResearchCardProps) {
+  const cardContent = (
     <article className="group pb-6 border-b border-zinc-200 dark:border-zinc-800 last:border-b-0">
       <h2 className="text-2xl font-semibold mb-3 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">{title}</h2>
-      <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4">{authors}</p>
+      <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4">{formatAuthors(authors)}</p>
       <div className="flex items-center justify-between">
         <div className="flex flex-wrap items-center text-xs text-zinc-500">
           {tags.map((tag, i) => (
@@ -19,7 +32,7 @@ export default function ResearchCard({ title, authors, tags, pdfUrl = "#" }: Res
             </span>
           ))}
         </div>
-        <a href={pdfUrl} className="p-2 border border-zinc-300 dark:border-zinc-700 rounded hover:border-zinc-500 dark:hover:border-zinc-500 transition-colors">
+        <a href={pdfUrl} onClick={(e) => e.stopPropagation()} className="p-2 border border-zinc-300 dark:border-zinc-700 rounded hover:border-zinc-500 dark:hover:border-zinc-500 transition-colors">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             <polyline points="7 10 12 15 17 10" />
@@ -29,4 +42,14 @@ export default function ResearchCard({ title, authors, tags, pdfUrl = "#" }: Res
       </div>
     </article>
   )
+
+  if (slug) {
+    return (
+      <Link href={`/research/${slug}`} className="block">
+        {cardContent}
+      </Link>
+    )
+  }
+
+  return cardContent
 }

@@ -2,6 +2,106 @@ body {
     font-family: 'Inter', 'Noto Sans', sans-serif;
     background-color: #ffffff;
     color: #4a4a4a;
+    scroll-behavior: smooth;
+    padding-top: 64px;
+}
+
+/* ---------- Navbar (OpenAI / Anthropic style) ---------- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid #ececec;
+    z-index: 1000;
+}
+
+.navbar-inner {
+    max-width: 1100px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.brand-mark {
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    background: linear-gradient(to right, #3F51B5, #2196F3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-left: auto;
+}
+
+.navbar-menu a {
+    color: #4a4a4a;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s ease;
+    white-space: nowrap;
+}
+
+.navbar-menu a:hover {
+    color: #111111;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: 1rem;
+}
+
+.navbar-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background-color: #111111;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.navbar-cta:hover {
+    background-color: #2c2c2c;
+    color: #ffffff;
+}
+
+/* Mobile: collapse center menu, keep brand + CTA */
+@media screen and (max-width: 768px) {
+    .navbar-inner {
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    .navbar-menu {
+        display: none;
+    }
 }
 
 .publication-title {
