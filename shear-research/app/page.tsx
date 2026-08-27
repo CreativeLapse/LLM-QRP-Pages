@@ -15,7 +15,7 @@ export default function Home() {
           <h1 className="text-5xl font-bold tracking-tight flex-1">
             AI <Link href="/research" className="underline underline-offset-4 hover:text-zinc-600 transition-colors">research</Link> that makes the world a better place
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed flex-1">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed flex-1">
             We focus on researching all things machine learning related. Our work spans
             the full spectrum of AI research, from foundational theory to applied systems,
             with the goal of building machines that can reason, learn, and generalize

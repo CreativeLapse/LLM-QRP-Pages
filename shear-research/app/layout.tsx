@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans, Bebas_Neue } from "next/font/google";
+import { Noto_Sans, Bebas_Neue, Space_Mono } from "next/font/google";
 import "./globals.css";
 
 const notoSans = Noto_Sans({
@@ -13,14 +13,23 @@ const bebasNeue = Bebas_Neue({
   weight: "400",
 });
 
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
   title: "SHEΛR",
   description: "SHEAR Research",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${notoSans.variable} ${bebasNeue.variable} h-full antialiased`}>
+    <html lang="en" className={`${notoSans.variable} ${bebasNeue.variable} ${spaceMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         {children}
       </body>
