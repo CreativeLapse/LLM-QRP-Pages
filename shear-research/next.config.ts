@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
 
+const basePath = "/LLM-QRP-Pages";
+
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: "/LLM-QRP-Pages",
-  assetPrefix: "/LLM-QRP-Pages/",
+  ...(process.env.NODE_ENV === "production"
+    ? { basePath, assetPrefix: `${basePath}/` }
+    : {}),
   images: {
     unoptimized: true,
   },
