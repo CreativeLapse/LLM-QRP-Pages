@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
+import { basePathForOutput } from "./app/lib/basepath";
 
-const basePath = "/LLM-QRP-Pages";
+const basePath = basePathForOutput;
 
 const nextConfig: NextConfig = {
   output: "export",
