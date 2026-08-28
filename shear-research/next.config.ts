@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
+import { basePathForOutput } from "./app/lib/basepath";
 
-const basePath = "/SHEAR-Research";
+const basePath = basePathForOutput;
 
 const nextConfig: NextConfig = {
   output: "export",

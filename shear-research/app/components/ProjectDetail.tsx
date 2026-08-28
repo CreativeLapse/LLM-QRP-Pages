@@ -16,6 +16,8 @@ interface ProjectDetailProps {
   }
 }
 
+import { withBasePath } from "../lib/basepath"
+
 export default function ProjectDetail({ title, authors, tags, abstract, links }: ProjectDetailProps) {
   const venue = tags.find((t) => ["ICLR", "CVPR", "NeurIPS", "ICML", "IROS"].includes(t))
   const year = tags.find((t) => /^\d{4}$/.test(t))
@@ -28,7 +30,7 @@ export default function ProjectDetail({ title, authors, tags, abstract, links }:
             <h3 className="text-sm font-semibold mb-3">Links</h3>
             <div className="flex flex-col gap-2">
               {links?.pdf && (
-                <a href={links.pdf} className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors flex items-center gap-2">
+                <a href={withBasePath(links.pdf)} className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors flex items-center gap-2">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                     <polyline points="7 10 12 15 17 10" />
@@ -68,7 +70,7 @@ export default function ProjectDetail({ title, authors, tags, abstract, links }:
 
           <div className="pb-6 mb-6 border-b border-zinc-200 dark:border-zinc-800">
             <h3 className="text-sm font-semibold mb-3">Publication</h3>
-            <p className="text-sm text-zinc-500">{venue} {year}</p>
+            <p className="text-sm text-zinc-500">Submitted to {venue} {year}</p>
           </div>
 
           <div>

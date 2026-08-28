@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Bebas_Neue, Space_Mono } from "next/font/google";
+import { withBasePath } from "./lib/basepath";
 import "./globals.css";
 
 const notoSans = Noto_Sans({
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   title: "SHEΛR",
   description: "SHEAR Research",
   icons: {
-    icon: "/favicon.svg",
+    icon: withBasePath("/favicon.svg"),
   },
 };
 
