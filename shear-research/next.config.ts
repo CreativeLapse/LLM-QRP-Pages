@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const basePath = "/LLM-QRP-Pages";
+const basePath = "/SHEAR-Research";
 
 const nextConfig: NextConfig = {
   output: "export",
