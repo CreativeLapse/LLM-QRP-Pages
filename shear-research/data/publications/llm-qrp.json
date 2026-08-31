@@ -8,7 +8,7 @@
   "tags": ["Quantization", "LLMs", "Reasoning", "ICLR", "2025", "Peer-reviewed Research"],
   "abstract": "Large Language Models (LLMs) have demonstrated exceptional capabilities in textual inference, but their practical deployment is constrained by high computation and memory overhead. To address this, we propose LLM-QRP (Quantization for Reasoning Preservation), a layer-aware, mixed-precision quantization framework designed to reduce model memory footprint while preserving multi-step reasoning capabilities. Unlike standard uniform post-training quantization methods that treat all parameters equally, LLM-QRP identifies and protects critical \u201cthinking\u201d sub-components by analyzing layer-wise Self-Logits Evolution Decoding (SLED) and entropy dynamics across the residual stream. These signals are unified via Principal Component Analysis (PCA) into a data-driven reasoning importance score. We then formulate precision allocation as a 0-1 Multiple-Choice Knapsack Problem solved via Integer Linear Programming (ILP) to assign higher bit-widths to high-sensitivity components under strict VRAM targets. Experiments on sub-500M parameter models across GSM8K, TruthfulQA, and MMLU demonstrate that LLM-QRP achieves an optimal Pareto frontier between model compression and task accuracy, maintaining near-baseline reasoning performance while outperforming standard uniform 4-bit baselines.",
   "links": {
-    "pdf": "/research/llm-qrp/paper.pdf",
+    "pdf": "/research/llm-qrp/paper.pdf?v=iclr2025",
     "arxiv": "#",
     "code": "https://github.com/ForceDrift/llm-qrp",
     "bibtex": ""
