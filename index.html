@@ -41,20 +41,20 @@
                 
                 <div class="is-size-5 publication-authors">
                     <span class="author-block">
-                        <a href="mailto:roshaniruku@gmail.com">Roshan Iruku</a><sup>1</sup>,
+                        <a href="mailto:riruku@uoguelph.ca">Roshan Iruku</a><sup>1</sup>,
                     </span>
                     <span class="author-block">
-                        <a href="mailto:gurshaan.dhillon10@gmail.com">Gurshaan Dhillon</a><sup>2</sup>
+                        <a href="mailto:gurshaandhillon@uwaterloo.ca">Gurshaan Dhillon</a><sup>2</sup>
                     </span>
                 </div>
 
                 <div class="is-size-5 publication-authors">
-                    <span class="author-block"><sup>1</sup>Central Peel Secondary School,</span>
-                    <span class="author-block"><sup>2</sup>North Park Secondary School</span>
+                    <span class="author-block"><sup>1</sup>University of Guelph,</span>
+                    <span class="author-block"><sup>2</sup>University of Waterloo</span>
                 </div>
 
                 <div class="is-size-5 publication-venue">
-                    <p><strong>Submitted to ICLR 2027</strong></p>
+                    <p><strong>Published as a conference paper at ICLR 2025</strong></p>
                 </div>
 
                 <div class="column has-text-centered">
@@ -84,10 +84,10 @@
                     <h2 class="title is-3">Abstract</h2>
                     <div class="content has-text-justified">
                         <p>
-                            Large Language Models (LLMs) have demonstrated exceptional capabilities in textual inference, but their deployment on edge devices is limited by high computation and memory overhead. To address this, we propose <strong>LLM-QRP</strong> (Quantization for Reasoning Preservation), a layer-aware mixed-precision quantization framework designed to reduce model size while preserving reasoning performance.
+                            Large Language Models (LLMs) have demonstrated exceptional capabilities in textual inference, but their practical deployment is constrained by high computation and memory overhead. To address this, we propose <strong>LLM-QRP</strong> (Quantization for Reasoning Preservation), a layer-aware, mixed-precision quantization framework designed to reduce model memory footprint while preserving multi-step reasoning capabilities.
                         </p>
                         <p>
-                            Unlike uniform post-training quantization methods, LLM-QRP identifies and preserves critical “thinking” layers by analyzing layer-wise logit evolution and entropy dynamics across transformer blocks. These signals are combined into a unified reasoning importance score that ranks layers according to their contribution during inference. We then apply an empirical mixed-precision strategy that assigns higher precision to high-scoring layers and lower precision to less important layers, targeting the Pareto frontier between model compression and reasoning performance. Experiments on multiple small models using GSM8K and TruthfulQA show that LLM-QRP reduces VRAM usage while maintaining near-baseline reasoning performance and outperforming standard uniform 4-bit quantization. The resulting models aim to provide the most compressed model at a given reasoning-performance level, enabling efficient deployment on resource-constrained hardware without significant degradation in reasoning ability.
+                            Unlike standard uniform post-training quantization methods that treat all parameters equally, LLM-QRP identifies and protects critical "thinking" sub-components by analyzing layer-wise Self-Logits Evolution Decoding (SLED) and entropy dynamics across the residual stream. These signals are unified via Principal Component Analysis (PCA) into a data-driven reasoning importance score. We then formulate precision allocation as a 0-1 Multiple-Choice Knapsack Problem solved via Integer Linear Programming (ILP) to assign higher bit-widths to high-sensitivity components under strict VRAM targets. Experiments on sub-500M parameter models across GSM8K, TruthfulQA, and MMLU demonstrate that LLM-QRP achieves an optimal Pareto frontier between model compression and task accuracy, maintaining near-baseline reasoning performance while outperforming standard uniform 4-bit baselines.
                         </p>
                     </div>
                 </div>
@@ -205,10 +205,11 @@
     <section class="section" id="bibtex">
         <div class="container is-max-desktop content">
             <h2 class="title">BibTeX</h2>
-            <pre><code>@inproceedings{iruku2024llmqrp,
+            <pre><code>@inproceedings{iruku2025llmqrp,
   title={Quantization for Reasoning Preservation in Small LLMs},
   author={Iruku, Roshan and Dhillon, Gurshaan},
-  year={2024}
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2025}
 }</code></pre>
         </div>
     </section>
